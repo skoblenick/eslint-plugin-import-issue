@@ -1,0 +1,50 @@
+---
+root: true
+
+ignorePatterns:
+  - "!.*" # do not ignore hidden files
+  - ".git/**"
+  - "**/dist/**"
+  - "**/node_modules/**"
+
+plugins:
+  - "@nrwl/nx"
+  - import
+
+rules:
+  import/first: error
+  import/order:
+    - error
+    - groups:
+        - internal
+        - external
+        - builtin
+        - object
+        - parent
+        - sibling
+        - index
+      newlines-between: always
+      alphabetize:
+        order: asc
+
+overrides:
+  -
+    files: ["*.ts", "*.js"]
+    rules:
+      "@nrwl/nx/enforce-module-boundaries":
+          - error
+          -
+            allow: []
+            depConstraints:
+              sourceTag: "*"
+              onlyDependOnLibsWithTags: ["*"]
+
+  -
+    files: ["*.ts"]
+    extends:
+      - "plugin:@nrwl/nx/typescript"
+    rules: {}
+  -
+    files: ["*.js"]
+    extends: ["plugin:@nrwl/nx/javascript"]
+    rules: {}
